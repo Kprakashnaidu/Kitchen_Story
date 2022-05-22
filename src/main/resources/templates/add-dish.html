@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Add Dish | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5 px-5">
+
+        <h1 class="col-10 ps-4 mx-auto display-6" th:text="${header}">Add Dish</h1>
+
+        <!-- ======= Form Section =======
+              th:action="${dishEntity.id eq null} ? '@{/dish/add}' : '@{/dish/add/{id}(id = ${dishEntity.id})}'"-->
+        <form th:object="${dishEntity}" method="POST"
+              th:action="${dishEntity.id eq null} ? @{/dish/add} : @{/dish/add/{id}(id = ${dishEntity.id})}">
+            <div class="row justify-content-center mx-3">
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="dish-name" th:field="*{name}" autofocus required
+                               minlength="3" list="dish-names"
+                               th:classappend="${#fields.hasErrors('name') or (param.dishName ne null)} ? 'is-invalid' : ''">
+                        <label for="dish-name">Dish Name</label>
+                        <datalist id="dish-names">
+                            <option value="Dum Biriyani">Dum Biriyani</option>
+                        </datalist>
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">
+                            Invalid Dish Name.
+                        </div>
+                        <div class="text-danger" th:if="${param.dishName ne null}">Dish Name already exists</div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <select class="form-select" id="dish-type" th:field="*{type}" autofocus required
+                                th:classappend="${#fields.hasErrors('type')} ? 'is-invalid' : ''">
+                            <option th:each="dish : ${dishTypes}" th:value="${dish}"
+                                    th:text="${dish}"
+                                    th:selected="${dish == dishEntity.type}"></option>
+                        </select>
+                        <label for="dish-type">Dish Type</label>
+                        <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger">
+                            Invalid Dish Type.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <select class="form-select" id="spicy" th:field="*{spicy}" autofocus required
+                                th:classappend="${#fields.hasErrors('spicy')} ? 'is-invalid' : ''">
+                            <option th:each="s : ${spicy}" th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${s == dishEntity.spicy}"></option>
+                        </select>
+                        <label for="spicy">Spicy</label>
+                        <div th:if="${#fields.hasErrors('spicy')}" th:errors="*{spicy}" class="text-danger">
+                            Invalid Spicy value.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="price" th:field="*{price}" autofocus required
+                               minlength="2"
+                               th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''">
+                        <label for="price">Dish Price</label>
+                        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">
+                            Invalid Price.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="rating" th:field="*{rating}" autofocus
+                               required list="dish-rating"
+                               th:classappend="${#fields.hasErrors('rating')} ? 'is-invalid' : ''">
+                        <label for="rating">Dish Rating</label>
+                        <datalist id="dish-rating">
+                            <option value="5">5</option>
+                            <option value="4.5">4.5</option>
+                            <option value="4">4</option>
+                        </datalist>
+                        <div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}" class="text-danger">
+                            Invalid Dish Rating.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 my-2">
+                    <div class="form-floating">
+                        <select class="form-select" id="chef-special" th:field="*{special}" autofocus required
+                                th:classappend="${#fields.hasErrors('special')} ? 'is-invalid' : ''">
+                            <option th:each="s : ${special}" th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${s == dishEntity.special}"></option>
+                        </select>
+                        <label for="chef-special">Is Special</label>
+                        <div th:if="${#fields.hasErrors('special')}" th:errors="*{special}" class="text-danger">
+                            Invalid value.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-10 my-2">
+                    <div class="form-floating">
+                        <input type="url" class="form-control" id="image-url" th:field="*{url}" autofocus
+                               required minlength="3"
+                               th:classappend="${#fields.hasErrors('url') or (param.imageUrl ne null)} ? 'is-invalid' : ''">
+                        <label for="image-url">Image URL</label>
+                        <div th:if="${#fields.hasErrors('url')}" th:errors="*{url}" class="text-danger">
+                            Invalid Image URL.
+                        </div>
+                        <div class="text-danger" th:if="${param.imageUrl ne null}">Error while fetching image</div>
+                    </div>
+                </div>
+
+                <div class="col-md-10 my-2">
+                    <div class="form-floating">
+                            <textarea class="form-control" placeholder="Description" id="description"
+                                      th:field="*{description}" style="height: 100px"
+                                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''">
+
+                            </textarea>
+                        <label for="description">Description</label>
+                        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                             class="text-danger">
+                            Please Leave a comment.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success col-6 mx-auto mt-2"
+                        id="add-dish-button"
+                        onclick="disableButton()">Add Dish</button>
+            </div>
+        </form>
+
+        <!--        Form End    -->
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+
+</html>

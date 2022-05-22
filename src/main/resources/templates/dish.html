@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title th:text="${dish.name + ' | Prakash Naidu'}">Menu | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container">
+        <!-- ======= Gallery Section ======= -->
+        <div class="product row py-2 my-5">
+            <div class="image col-8 px-4">
+                <img th:alt="${dish.name}"
+                     th:src="@{'data:image/png;base64,' + ${dish.image.bytesToImageConverter(dish.image.image)}}"
+                     class="img-fluid rounded w-100"
+                />
+            </div>
+            <div class="content col">
+                <h1 th:text="${dish.name}">Meal Name</h1>
+                <h3 th:text="${#strings.replace(dish.type,'-',' ')}">Meal Type (Veg)</h3>
+                <h4 th:text="${'₹' + dish.price}">Price</h4>
+                <h5 class="text-success mb-1">Ready to Serve</h5>
+                <h5 th:text="${dish.rating + ' stars'}" class="mb-1">Ratings</h5>
+                <h5 class="lead text-info" th:text="${'Is Special: ' + dish.special}">Special</h5>
+                <h5 class="lead text-warning" th:text="${'Is Spicy: ' + dish.spicy}">Spicy</h5>
+                <div class="button-section row mt-5 mx-auto">
+<!--                    <a th:href="@{/order/checkout/{id}(id = ${dish.id})}" class="btn btn-success col mx-1">-->
+<!--                        Order It-->
+<!--                    </a>-->
+                    <a th:href="@{/cart/add/{id}(id = ${dish.id})}" class="btn btn-info col-6 mx-1">
+                        Add to Cart
+                    </a>
+                </div>
+            </div>
+            <div class="description lead px-4 my-2" th:text="${dish.description}">This is description</div>
+        </div>
+        <!-- End Gallery -->
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+
+</html>

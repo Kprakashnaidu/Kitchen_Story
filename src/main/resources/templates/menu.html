@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Menu | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5">
+        <!-- ======= List-Group Section ======= -->
+        <h1 class="text-danger text-center" th:if="${#lists.isEmpty(dishes)}"></h1>
+        <div class="row my-3" th:unless="${#lists.isEmpty(dishes)}">
+            <div id="list-example" class="list-group col-3">
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center mb-1"
+                   th:each="type : ${typeCount}" th:href="${'#' + type.key}">[[${#strings.replace(type.key,'-',' ')}]]
+                    <span class="badge rounded-pill bg-primary" th:text=${type.value}>4</span>
+                </a>
+            </div>
+            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
+                 class="scrollspy-example col p-3 border border-dark rounded" tabindex="0">
+                <form class="col-6 position-relative my-4 mx-auto shadow-sm">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           id="search" th:onkeyup="filterItems()"/>
+                </form>
+
+                <div class="list-group px-2" id="menu">
+                    <div class="list-group-item list-group-item-action my-2 border-0 bg-none row"
+                         th:each="types : ${typeCount}" th:id="${types.key}">
+                        <h3 class="fw-bold lead text-center" th:text="${#strings.replace(types.key,'-',' ')}">veg</h3>
+                        <a th:href="@{/dish/{id}(id = ${dish.id})}"
+                           class="text-decoration-none d-flex w-100 my-3 item"
+                           th:each="dish : ${dishes}" th:if="${dish.type eq types.key}">
+                            <img class="img-fluid rounded" th:alt="${dish.name}"
+                                 th:src="@{'data:image/png;base64,' + ${dish.image.bytesToImageConverter(dish.image.image)}}"
+                                 style="max-height: 100px; width: 150px; height: 100px; max-width: 150px;"/>
+                            <div class="ms-3 my-auto">
+                                <h4 th:text=${dish.name}>Item 1</h4>
+                                <!-- <h5 th:text="${#strings.replace(dish.type,'-',' ')}">category</h5> -->
+                                <div>
+                                    <span class="badge rounded bg-dark col me-1" th:text=${dish.price}>₹295</span>
+                                    <span class="badge rounded bg-warning col me-1"
+                                          th:text=${dish.spicy}>must taste</span>
+                                    <span class="badge rounded bg-info col me-1"
+                                          th:text=${dish.special}>chef special</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End List-Group -->
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+</body>
+
+</html>

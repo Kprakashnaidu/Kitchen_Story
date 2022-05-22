@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Kitchen Story | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} " />
+
+    <!-- Owl Carousel styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+          integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+          crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css"
+          integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA=="
+          crossorigin="anonymous" />
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container">
+        <!-- ======= Card Section ======= -->
+        <div class="row mb-5">
+            <h3 class="mb-4 text-info">Dish Recommendation</h3>
+            <div class="card col mx-2 p-0 scale" th:each="dish : ${fourRandomDishes}">
+                <a th:href="@{/dish/{id}(id = ${dish.id})}" class="d-block text-decoration-none text-dark">
+                    <img th:alt="${dish.name}"
+                         th:src="@{'data:image/png;base64,' + ${dish.image.bytesToImageConverter(dish.image.image)}}"
+                         class="card-img-top" style="max-height: 200px; height: 200px;"/>
+                    <div class="card-body">
+                        <div class="card-text text-center lead" th:text="${dish.name}">Dish - 1</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- End Card -->
+
+        <!-- ======= Owl-Carousel Section ======= -->
+
+        <h3 class="mb-4 text-primary">Dish Collections</h3>
+        <div class="owl-carousel owl-theme mb-5">
+            <div class="item scale" th:each="dish : ${randomDishes}">
+                <a th:href="@{/dish/{id}(id = ${dish.id})}" class="d-block text-decoration-none text-center">
+                    <div class="item-cover"></div>
+                    <img th:alt="${dish.name}"
+                         th:src="@{'data:image/png;base64,' + ${dish.image.bytesToImageConverter(dish.image.image)}}"
+                         style="max-height: 230px; height: 230px;"/>
+                    <p class="text-white" th:text="${dish.name}">This is veg biryani</p>
+                </a>
+            </div>
+        </div>
+        <!-- End Owl-Carousel  -->
+
+        <!-- ======= Locations Section ======= -->
+
+        <h3 class="mb-4 text-center text-danger">Locations we server</h3>
+
+        <div class="row mb-5 justify-content-between">
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Delhi</h4>
+            </div>
+
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Mumbai</h4>
+            </div>
+
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Bengaluru</h4>
+            </div>
+
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Chennai</h4>
+            </div>
+
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Hyderabad</h4>
+            </div>
+
+            <div
+                    class="location col-3 fw-bold rounded border border-info p-3 shadow-sm text-uppercase m-3 text-center">
+                <h4>Amaravati</h4>
+            </div>
+        </div>
+
+        <!-- End Locations  -->
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Owl Carousel JS dependency-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+        integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+        crossorigin="anonymous"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+<!-- Custom JS -->
+<script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                loop: true,
+                items: 4,
+                margin: 15,
+                autoWidth: true,
+                autoHeight: true,
+                autoplay: true,
+                autoplayTimeout: 1000,
+                autoplayHoverPause: true,
+                nav: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                    },
+                    600: {
+                        items: 3,
+                    },
+                    1000: {
+                        items: 5,
+                    },
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Sign-Up | Kitchen Story</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/cover.css}" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+
+    <style>
+      .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="d-flex h-100 text-center text-white bg-dark">
+<!-- Wrapper Starts here -->
+<div class="cover-container d-flex w-100 vh-100 p-3 mx-auto flex-column">
+    <!--Nav-Bar Starts-->
+    <th:block th:replace="fragments/login-header :: header"></th:block>
+    <!--Nav-Bar Ends-->
+
+    <main role="main">
+        <div class="form my-2 col-12 mx-auto">
+            <h1 class="cover-heading mb-3">Registration page</h1>
+            <form
+                    th:action="@{/user/sign-up}"
+                    th:object="${userEntity}"
+                    method="POST"
+                    class="text-dark"
+            >
+                <div class="d-flex mb-3">
+                    <div class="col form-floating me-2">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="full-name"
+                                th:field="*{name}"
+                                placeholder="Prakash Naidu"
+                                th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                required
+                                autofocus
+                                minlength="4"
+                        />
+                        <label for="full-name">Full Name</label>
+                        <div
+                                th:if="${#fields.hasErrors('name')}"
+                                th:errors="*{name}"
+                                class="text-danger"
+                        >
+                            Please provide your Name.
+                        </div>
+                    </div>
+                    <div class="col form-floating ms-2">
+                        <input
+                                type="email"
+                                class="form-control"
+                                id="email-id"
+                                th:field="*{email}"
+                                placeholder="prakashnaidupn7@gmail.com"
+                                th:classappend="${#fields.hasErrors('email') or (param.emailIdExists ne null)} ? 'is-invalid' : ''"
+                                required
+                                autofocus
+                                minlength="6"
+                        />
+                        <label for="email-id">Email ID</label>
+                        <div
+                                th:if="${#fields.hasErrors('email')}"
+                                th:errors="*{email}"
+                                class="text-danger"
+                        >
+                            Please provide valid Email ID.
+                        </div>
+                        <div class="text-danger" th:if="${param.emailIdExists ne null}">Email ID already exists</div>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="col form-floating me-2">
+                        <select
+                                class="form-select"
+                                id="gender"
+                                th:field="*{gender}"
+                                th:classappend="${#fields.hasErrors('gender')} ? 'is-invalid' : ''"
+                                autofocus
+                                required
+                        >
+                            <option selected value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <label for="gender">Gender</label>
+                        <div
+                                th:if="${#fields.hasErrors('gender')}"
+                                th:errors="*{gender}"
+                                class="text-danger"
+                        >
+                            Please select your Gender.
+                        </div>
+                    </div>
+                    <div class="col form-floating ms-2 position-relative">
+                        <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                th:field="*{password}"
+                                placeholder="Your Password"
+                                th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                required
+                                autofocus
+                                minlength="4"
+                        />
+                        <div class="position-absolute show-password" th:onclick="showPassword(this)" style="top: 30%">
+                            <img th:src="@{/img/eye-slash.svg}" alt="" width="20"/>
+                        </div>
+                        <label for="password">Password</label>
+                        <div
+                                th:if="${#fields.hasErrors('password')}"
+                                th:errors="*{password}"
+                                class="text-danger"
+                        >
+                            Please create a strong password.
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="col form-floating">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="address"
+                                th:field="*{address}"
+                                placeholder="#door-no, street, landmark"
+                                th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''"
+                                required
+                                autofocus
+                                minlength="4"
+                        />
+                        <label for="address">Address</label>
+                        <div
+                                th:if="${#fields.hasErrors('address')}"
+                                th:errors="*{address}"
+                                class="text-danger"
+                        >
+                            Please enter valid address.
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex mb-3 justify-content-between">
+                    <div class="col-5 form-floating">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="city"
+                                th:field="*{city}"
+                                autofocus
+                                placeholder="Bengaluru"
+                                th:classappend="${#fields.hasErrors('city')} ? 'is-invalid' : ''"
+                                minlength="4"
+                                required
+                        />
+                        <label for="city">City</label>
+                        <div
+                                th:if="${#fields.hasErrors('city')}"
+                                th:errors="*{city}"
+                                class="text-danger"
+                        >
+                            Please provide a valid city.
+                        </div>
+                    </div>
+                    <div class="col-3 form-floating mx-2">
+                        <select
+                                class="form-select"
+                                id="state"
+                                th:field="*{state}"
+                                th:classappend="${#fields.hasErrors('state')} ? 'is-invalid' : ''"
+                                autofocus
+                                required
+                        >
+                            <option selected value="Karnataka">Karnataka</option>
+                            <option value="AP">AP</option>
+                        </select>
+                        <label for="state">State</label>
+                        <div
+                                th:if="${#fields.hasErrors('state')}"
+                                th:errors="*{state}"
+                                class="text-danger"
+                        >
+                            Please select a valid state.
+                        </div>
+                    </div>
+                    <div class="col-3 form-floating">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="zip-code"
+                                th:field="*{zipcode}"
+                                placeholder="560006"
+                                th:classappend="${#fields.hasErrors('zipcode')} ? 'is-invalid' : ''"
+                                autofocus
+                                required
+                        />
+                        <label for="zip-code">Zip Code</label>
+                        <div
+                                th:if="${#fields.hasErrors('zipcode')}"
+                                th:errors="*{zipcode}"
+                                class="text-danger"
+                        >
+                            Please provide a valid zip.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-center my-2">
+                    <div class="form-check text-white">
+                        <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="true"
+                                id="invalidCheck"
+                                th:field="*{terms}"
+                                th:classappend="${#fields.hasErrors('terms')} ? 'is-invalid' : ''"
+                                required
+                        />
+                        <label class="form-check-label" for="invalidCheck">
+                            Agree to terms and conditions
+                        </label>
+                        <div
+                                th:if="${#fields.hasErrors('terms')}"
+                                th:errors="*{terms}"
+                                class="text-danger"
+                        >
+                            You must agree before submitting.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Register Me</button>
+            </form>
+        </div>
+    </main>
+
+    <!--Footer Starts-->
+    <footer class="mt-auto text-white-100">
+        <p>Designed & Developed by
+            <a href="https://kprakashnaidu.github.io/Portfolio/" target="_blank" class="text-white">Prakash Naidu</a>.
+        </p>
+    </footer>
+    <!--Footer Ends-->
+</div>
+<!-- Wrapper Ends here -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+</html>

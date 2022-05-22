@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!--    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Header</title>-->
+    <title>Header | Kitchen Store</title>
+</head>
+<body>
+<!-- ======= Navbar Section ======= -->
+
+<nav th:fragment="nav-bar" class="navbar navbar-expand-lg navbar-dark bg-dark vh-50 bg-image mb-4">
+
+    <!-- ======= Toast Section ======= -->
+    <div class="toast align-items-center text-white bg-primary border-2 text-white border-white position-absolute d-none"
+         role="alert" aria-live="assertive" aria-atomic="true" id="toast">
+        <div class="d-flex">
+            <div class="toast-body">Hello, world! This is a toast message.</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+    <!-- End Toast -->
+
+    <div class="wrapper text-center">
+        <h2 class="text-white position-relative d-none heading" style="top: 25%">
+            <div class="ms-5 ps-4">Kitchen Story - Order Food Online</div>
+        </h2>
+    </div>
+    <div class="container-fluid nav-content">
+        <a class="navbar-brand align-self-start text-white" th:href="@{/index}">Kitchen Story</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto px-2 row col-12">
+                <li class="nav-item col">
+                    <a class="nav-link text-center d-block active" aria-current="page" th:href="@{/menu}">Menu</a>
+                </li>
+
+                <!-- ======= Form Search Section ======= -->
+                <li class="nav-item col-7 align-self-center position-relative">
+                    <form class="row" th:action="@{/home}" method="GET">
+                        <div class="col-10 p-0">
+                            <input class="form-control rounded-0" type="search"
+                                   placeholder="Search for a dish" name="dish" autofocus minlength="3"/>
+                        </div>
+                        <button class="btn btn-primary col rounded-0 input-group-text" type="submit">
+                            Search
+                        </button>
+                    </form>
+
+                    <div class="form-search position-absolute w-100 start-0" th:if="${param.dish}">
+                        <div class="col-12 mx-auto mt-3 bg-dark px-3 py-4 rounded form-search-content position-relative">
+                            <div class="position-absolute end-0 top-0 bg-danger rounded pointer z-index-5000"
+                                 id="close-search" onclick="closeResult()">
+                                <img th:src="@{/img/x.svg}" id="password-icon" alt="" width="20"/>
+                            </div>
+                            <div class="text-center text-white" th:if="${#lists.isEmpty(dishes)}"
+                                 th:text="${'No Dish Found with Name: ' + param.dish}">No Dish Found
+                            </div>
+                            <div class="list-group" th:unless="${#lists.isEmpty(dishes)}">
+                                <a th:href="@{/dish/{id}(id = ${dish.id})}"
+                                   class="list-group-item list-group-item-action my-2 rounded"
+                                   aria-current="true" th:each="dish : ${dishes}">
+                                    <div class="d-flex w-100">
+                                        <img th:alt="${dish.name}"
+                                             th:src="@{'data:image/png;base64,' + ${dish.image.bytesToImageConverter(dish.image.image)}}"
+                                             style="max-height: 100px; width: 150px; height: 100px; max-width: 150px;">
+                                        <div class="ms-3">
+                                            <h4 th:text=${dish.name}>List group item heading</h4>
+                                            <h5 th:text=${dish.type}>Category</h5>
+                                            <div>
+                                                <span class="badge rounded bg-dark col me-1" th:text="${dish.price}">₹295</span>
+                                                <span class="badge rounded bg-warning col me-1" th:text=${dish.spicy}>must taste</span>
+                                                <span class="badge rounded bg-info col me-1" th:text=${dish.special}>chef special</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- End Form Search  -->
+
+                <li class="nav-item dropdown col ms-5">
+                    <a class="nav-link dropdown-toggle text-white d-block text-center" href="#" id="navbarDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false" sec:authentication="name">
+                        My Account
+                    </a>
+                    <ul class="dropdown-menu end-0" aria-labelledby="navbarDropdown">
+                        <th:block th:unless="${#authentication?.getPrincipal()?.getUsername()}">
+                            <li><a class="dropdown-item" th:href="@{/login}">Login</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user/sign-up}">Sign Up</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user/forgot-password}">Forgot Password</a></li>
+                        </th:block>
+                        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                            <li>
+                                <hr class="dropdown-divider"/>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/dish/add}">Add Dish</a></li>
+                            <li><a class="dropdown-item" th:href="@{/dish/all}">All Dishes</a></li>
+                        </th:block>
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li>
+                                <hr class="dropdown-divider"/>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/order/cart}">View Cart</a></li>
+                            <li><a class="dropdown-item" th:href="@{/order/all}">View Orders</a></li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/user/all}"
+                                   th:text="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? 'All Users' : 'View Profile'}">
+                                    All Users
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider"/>
+                            </li>
+                            <li>
+                                <a role="button" class="dropdown-item" href="#" data-bs-toggle="modal"
+                                   data-bs-target="#changePassword">Change Password</a>
+                            </li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                        </th:block>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- ======= Model Section ======= -->
+    <div class="modal fade" id="changePassword">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Enter you new password.</p>
+                    <form class="form-floating" th:onsubmit="return changePassword()" id="changePasswordForm"
+                          th:action="@{/user/change-password}" method="POST">
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" class="form-control" id="password"
+                                   placeholder="New Password" required name="password"
+                                   minlength="4"/>
+                            <div class="position-absolute show-password" th:onclick="showPassword(this)">
+                                <img th:src="@{/img/eye-slash.svg}" alt="" width="20"/>
+                                <!-- <i class="eye-slash"></i> -->
+                            </div>
+                            <label for="password">New Password</label>
+                        </div>
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" class="form-control" id="confirm-password"
+                                   placeholder="Conform New Password" name="confirmPassword"
+                                   required
+                                   minlength="4"/>
+                            <div class="position-absolute show-password" th:onclick="showPassword(this)">
+                                <img th:src="@{/img/eye-slash.svg}" alt="" width="20"/>
+                                <!-- <i class="eye-slash"></i> -->
+                            </div>
+                            <label for="confirm-password">Confirm New Password</label>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Model  -->
+</nav>
+
+<!-- End Navbar  -->
+</body>
+</html>

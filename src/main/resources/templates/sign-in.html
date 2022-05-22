@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Sign-In | Kitchen Story</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/cover.css}" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+
+    <style>
+      .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="d-flex h-100 text-center text-white bg-dark">
+<!-- Wrapper Starts here -->
+<div class="cover-container d-flex w-100 vh-100 p-3 mx-auto flex-column">
+    <!--Nav-Bar Starts-->
+    <th:block th:replace="fragments/login-header :: header"></th:block>
+    <!--Nav-Bar Ends-->
+
+    <main role="main">
+        <div class="form my-5 col-8 mx-auto">
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+                </div>
+            </div>
+            <h1 class="cover-heading my-4">Login page</h1>
+            <form th:action="@{/login}" method="post" class="my-2">
+                <div class="form-group">
+                    <label for="email-id">Email address</label>
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="email-id"
+                            placeholder="prakashnaidupn7@gmail.com"
+                            minlength="5"
+                            autofocus
+                            autocomplete="autocomplete"
+                            required
+                            aria-describedby="emailHelp"
+                            name="username"
+                    />
+                    <small id="emailHelp" class="form-text text-muted"
+                    >We'll never share your email with anyone else.</small
+                    >
+                </div>
+                <div class="form-group position-relative">
+                    <label for="password">Password</label>
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            placeholder="Enter Password"
+                            minlength="4"
+                            autofocus
+                            required
+                            name="password"
+                    />
+                    <div class="position-absolute show-password" th:onclick="showPassword(this)" style="top: 50%">
+                        <img th:src="@{/img/eye-slash.svg}" alt="" width="20"/>
+                    </div>
+                </div>
+                <div class="form-group form-check d-flex justify-content-center my-2">
+                    <input
+                            type="checkbox"
+                            class="form-check-input"
+                            id="exampleCheck1"
+                    />
+                    <label class="form-check-label px-2" for="exampleCheck1"
+                    >Remember Me</label
+                    >
+                </div>
+                <button type="submit" class="btn btn-success btn-block lead">
+                    Let Me In
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!--Footer Starts-->
+    <footer class="mt-auto text-white-100">
+        <p>Designed & Developed by
+            <a href="https://kprakashnaidu.github.io/Portfolio/" target="_blank" class="text-white">Prakash Naidu</a>.
+        </p>
+    </footer>
+    <!--Footer Ends-->
+</div>
+<!-- Wrapper Ends here -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+</html>

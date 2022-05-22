@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <!--    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Header</title>-->
+    <title>Footer | Kitchen Store</title>
+</head>
+<body>
+<!-- ======= Footer Section ======= -->
+<footer th:fragment="footer" class="bg-dark row w-100 justify-content-around py-3 mx-0">
+    <div class="col-4 mb-0 fw-bold text-white text-center">
+        Kitchen Story
+    </div>
+    <div class="col-4 text-center text-white">
+        <div class="">
+            Designed & Developed by
+            <a href="https://kprakashnaidu.github.io/Portfolio/"
+               target="_blank"
+               class="text-decoration-none mx-2"><strong>Prakash Naidu</strong></a>
+        </div>
+    </div>
+    <div class="col-4 text-center text-white">
+        <div class="">
+            <script>
+            document.write(new Date().getFullYear());
+            </script>
+            © Kitchen Story™ All Rights Reserved
+        </div>
+    </div>
+</footer>
+<!-- End Footer  -->
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Cart | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-5 col-lg-4 order-2 cart">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted ps-1">Your cart</span>
+                    <span class="badge bg-success rounded-pill" th:text="${count}">3</span>
+                </h4>
+                <h3 class="text-danger text-center" th:unless="${count > 0}">Your cart is empty</h3>
+                <ul class="list-group mb-3" th:if="${count > 0}">
+                    <li class="list-group-item d-flex justify-content-between lh-sm position-relative cart-item"
+                        th:each="dish : ${dishes}">
+                        <div>
+                            <h6 class="my-0" th:text="${dish.name}">Product name</h6>
+                            <small class="text-muted" th:text="${#strings.replace(dish.type,'-',' ')}">Type</small>
+                        </div>
+                        <span class="text-muted align-self-center" th:text="${'₹' + dish.price}">₹295</span>
+                        <a th:href="@{/cart/delete/{id}(id = ${dish.id})}"
+                           class="text-decoration-none trash text-danger">
+                            <img th:src="@{/img/trash.svg}" alt="" width="20"/>
+                        </a>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between mt-2 border-0">
+                        <span>Total</span>
+                        <strong th:text="${'₹' + total}">₹295</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">Payment Gateway</h4>
+                <!--                th:action="${count eq 1} ? '@{/order/add/{id}(id = ${dish.id})}' : '@{/order/add}'"-->
+                <form th:object="${orderEntity}" method="POST"
+                      th:action="@{/order/add}">
+                    <hr class="my-4"/>
+
+                    <h4 class="mb-3">Select Card type</h4>
+
+                    <div class="my-3">
+                        <div class="select-payment row col-5">
+                            <div class="col pe-0" th:each="card : ${cards}">
+                                <input type="radio" class="btn-check" th:field="*{type}" th:id="${card}" th:value="${card}"
+                                       th:checked="${card == 'Credit'}" autofocus
+                                       th:classappend="${#fields.hasErrors('type')} ? 'is-invalid' : ''"/>
+                                <label class="btn btn-outline-info" th:for="${card}" th:text="${card + 'Card'}">Credit
+                                    Card</label>
+                                <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="text-danger">
+                                    Select Card type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label">Name on card</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="Prakash Naidu" required
+                                   minlength="4" autofocus th:field="*{nameOnCard}"
+                                   th:classappend="${#fields.hasErrors('nameOnCard')} ? 'is-invalid' : ''"/>
+                            <small class="text-warning" autofocus
+                                   th:classappend="${#fields.hasErrors('nameOnCard')} ? 'd-none' : ''">
+                                Full name as displayed on card
+                            </small>
+                            <div th:if="${#fields.hasErrors('nameOnCard')}" th:errors="*{nameOnCard}"
+                                 class="text-danger">
+                                Invalid Card Name.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cc-number" class="form-label">Card number</label>
+                            <input type="number" class="form-control" id="cc-number" placeholder="1254678912346789"
+                                   required
+                                   minlength="12" maxlength="12" th:field="*{number}" autofocus
+                                   th:classappend="${#fields.hasErrors('number')} ? 'is-invalid' : ''"/>
+                            <small class="text-warning" autofocus
+                                   th:classappend="${#fields.hasErrors('number')} ? 'd-none' : ''">
+                                Card Number must be 12 digit number
+                            </small>
+                            <div th:if="${#fields.hasErrors('number')}" th:errors="*{number}" class="text-danger">
+                                Invalid Card Number.
+                            </div>
+                        </div>
+
+                        <div class="row mt-1 justify-content-around">
+                            <div class="col-9">
+                                <label for="expiry" class="mb-2">Expiration</label>
+                                <div class="row" id="expiry">
+                                    <div class="row col">
+                                        <label for="month-select" class="col-sm-3 col-form-label">Month</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="month-select" autofocus required
+                                                    aria-label="Default select example" th:field="*{month}">
+                                                <option value="January" selected>January</option>
+                                                <option value="February">February</option>
+                                                <option value="March">March</option>
+                                                <option value="April">April</option>
+                                                <option value="May">May</option>
+                                                <option value="June">June</option>
+                                                <option value="July">July</option>
+                                                <option value="August">August</option>
+                                                <option value="September">September</option>
+                                                <option value="October">October</option>
+                                                <option value="November">November</option>
+                                                <option value="December">December</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row col">
+                                        <label for="month-year" class="col-sm-2 col-form-label">Year</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-select" id="month-year" required autofocus
+                                                    aria-label="Default select example" th:field="*{year}">
+                                                <option value="2021" selected>2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2029">2029</option>
+                                                <option value="2030">2030</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <label for="cc-cvv" class="form-label">CVV</label>
+                                <input type="number" class="form-control" id="cc-cvv" placeholder="458" required
+                                       minlength="3" maxlength="3" th:field="*{cvv}" autofocus
+                                       th:classappend="${#fields.hasErrors('cvv')} ? 'is-invalid' : ''"/>
+                                <div th:if="${#fields.hasErrors('cvv')}" th:errors="*{cvv}" class="text-danger">
+                                    Invalid Card CVV Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4"/>
+
+                    <button class="w-100 btn btn-success" type="submit" th:disabled="${count <= 0}">
+                        Continue to checkout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+
+</html>

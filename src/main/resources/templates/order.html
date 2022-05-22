@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Order | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Datatable core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/datatables/1.10.23/css/jquery.dataTables.css}"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5">
+        <div class="w-100 mb-3">
+            <h1>Order Details</h1>
+        </div>
+        <table id="example" class="display w-100">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td th:text="${order.id}">1234</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td><a th:href="@{/user/{id}(id = ${order.user.id})}" th:text="${order.user.name}"
+                       class="text-decoration-none">user</a></td>
+            </tr>
+            <tr>
+                <th>Bill Amount</th>
+                <td th:text="${'₹' + order.billAmount}">1234</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td th:text="${#dates.format(order.date, 'dd-MMM-yyyy')}">15-feb-2020</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td th:text="${order.quantity}">5</td>
+            </tr>
+            <tr>
+                <th>Ordered Using</th>
+                <td th:text="${order.type + ' card'}">Debit</td>
+            </tr>
+            <tr>
+                <th>Card Number</th>
+                <td th:text="${order.number}">12545644465</td>
+            </tr>
+            <tr>
+                <th>Dishes</th>
+                <td>
+                    <ol type="1">
+                        <li th:each="dish : ${order.dishes}">
+                            <a th:href="@{/dish/{id}(id = ${dish.id})}" class="text-decoration-none"
+                            th:text="${dish.name + ' -  ₹' + dish.price + '/-'}">Dish</a>
+                        </li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Datatables JS dependency-->
+<script th:src="@{/webjars/datatables/1.10.23/js/jquery.dataTables.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+<script>
+   $(document).ready(function () {
+     $("#example").DataTable();
+   });
+</script>
+</body>
+
+</html>

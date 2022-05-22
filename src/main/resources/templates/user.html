@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>User | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Datatable core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/datatables/1.10.23/css/jquery.dataTables.css}"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5">
+        <div class="w-100 mb-3">
+            <h1>User Details</h1>
+        </div>
+        <table id="example" class="display w-100">
+            <tbody>
+            <tr>
+                <th>User ID</th>
+                <td th:text="${user.id}"></td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td th:text="${user.name}"></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td th:text="${user.email}"></td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td th:text="${user.gender}"></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td th:text="${user.address}"></td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td th:text="${user.city}"></td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td th:text="${user.state}"></td>
+            </tr>
+            <tr>
+                <th>Zipcode</th>
+                <td th:text="${user.zipcode}"></td>
+            </tr>
+            <tr>
+                <th>User Role</th>
+                <td th:text="${user.userRole}"></td>
+            </tr>
+            <tr>
+                <th>Is Account Non Expired</th>
+                <td th:text="${user.isAccountNonExpired}"></td>
+            </tr>
+            <tr>
+                <th>Is Account Non Locked</th>
+                <td th:text="${user.isAccountNonLocked}"></td>
+            </tr>
+            <tr>
+                <th>Is Credentials Non Expired</th>
+                <td th:text="${user.isCredentialsNonExpired}"></td>
+            </tr>
+            <tr>
+                <th>Is Enabled</th>
+                <td th:text="${user.isEnabled}"></td>
+            </tr>
+            <tr>
+                <th>All Orders</th>
+                <td>
+                    <ol type="1">
+                        <li th:each="order, stats : ${user.orders}">
+                            <a th:href="@{/order/{id}(id=${order.id})}"
+                               th:text="${'Order ' + stats.index + 1}"></a>
+                        </li>
+                    </ol>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Datatables JS dependency-->
+<script th:src="@{/webjars/datatables/1.10.23/js/jquery.dataTables.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+<script>
+   $(document).ready(function () {
+     $("#example").DataTable();
+   });
+</script>
+</body>
+
+</html>

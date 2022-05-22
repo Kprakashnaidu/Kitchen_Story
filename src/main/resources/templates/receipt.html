@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Receipt | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container mt-5 mb-3">
+        <div class="card border-success shadow mb-5">
+            <div class="card-header bg-success">
+                <h3 class="py-1">Order Status</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title text-success text-center mt-4">You order is successfully placed, you will get it
+                    soon
+                </h4>
+
+                <div class="col-8 mx-auto mt-5 p-4 border-3 border-bottom border-top border-success">
+                    <div class="text-info mt-2 mb-3">Payment Receipt</div>
+                    <div class="">
+                        <div class="row justify-content-end order-date mb-2">
+                            <div class="date-section col mb-1">
+                                <div class="fw-bold">Date</div>
+                                <div th:text="${#dates.format(order.date, 'dd-MMM-yyyy')}">40 Feb 2021</div>
+                            </div>
+
+                            <div class="order-no col mb-1">
+                                <div class="fw-bold">Order No</div>
+                                <div th:text="${order.id}">15df4d4e5ed4</div>
+                            </div>
+                        </div>
+
+                        <div class="dish">
+                            <div class="row justify-content-end dish-list mb-2" th:each="dish : ${order.dishes}">
+                                <div class="col" th:text="${dish.name}">Dum Biriyani</div>
+                                <div class="col fw-bold" th:text="${'₹' + dish.price}">$154</div>
+                            </div>
+                            <div class="row justify-content-end total mb-2">
+                                <div class="col">Total</div>
+                                <div class="col fw-bold" th:text="${'₹' + order.billAmount}">$1415</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fw-bold mt-3 text-primary">Thank for your order. Enjoy the dish :)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+</body>
+
+</html>

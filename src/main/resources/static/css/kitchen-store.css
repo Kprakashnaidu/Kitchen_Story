@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+* {
+  font-family: "Roboto", sans-serif !important;
+}
+.vh-50,
+.vh-50 ul.navbar-nav,
+.vh-50 .wrapper {
+  height: 50vh !important;
+}
+
+.vh-100 {
+    height: 100vh;
+}
+.vh-50 .heading {
+  display: block !important;
+}
+.vh-50 ul.navbar-nav {
+  padding-top: 0.5rem !important;
+}
+.vh-50 a.navbar-brand {
+  font-size: 2rem !important;
+}
+.vh-50 a.nav-link {
+  font-size: 1.2rem !important;
+}
+.vh-50 ul.dropdown-menu {
+  position: absolute;
+  top: 40px;
+}
+/*
+    1. url([[@{/img/food-bg.jpg}]])
+    2. th:style="'background:url('+ @{/image/food-bg.jpg}+');'"
+*/
+.bg-image {
+  background-image: url("../img/food-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.wrapper {
+  background: #000;
+  height: 56px;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  opacity: 0.6;
+}
+.nav-content {
+  z-index: 1000;
+}
+.toast {
+  top: 60px;
+  right: 40px;
+  z-index: 5000;
+}
+.form-search {
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 500px;
+}
+.form-search::-webkit-scrollbar,
+.scrollspy-example::-webkit-scrollbar {
+  width: 4px;
+}
+.form-search::-webkit-scrollbar-thumb {
+  background: #fff;
+}
+.scrollspy-example::-webkit-scrollbar-thumb {
+  background-color: #0d6efd;
+}
+.scrollspy-example {
+  position: relative;
+  height: 400px;
+  overflow: auto;
+}
+.show-password,
+.search,
+.trash {
+  position: absolute;
+  top: 25%;
+  right: 40px;
+  cursor: pointer;
+}
+
+.z-index-5000 {
+  z-index: 5000;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+#menu img {
+  height: 125px;
+}
+
+.product .image img {
+  height: 450px;
+  max-height: 450px;
+}
+.trash {
+  display: none;
+  top: 32%;
+  right: 25%;
+  transition: all 300ms ease 0s;
+}
+.cart-item:hover .trash {
+  display: block;
+}
+.scale {
+  transition: transform 300ms ease 0s;
+}
+.scale:hover {
+  transform: scale(1.1);
+}
+.owl-carousel .item img {
+  width: 350px;
+}
+.owl-carousel .item .item-cover {
+  height: 230px;
+}
+.owl-carousel .item a {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+.owl-carousel .item p {
+  position: absolute;
+  bottom: 25px;
+  left: 25%;
+  font-size: 1.5rem;
+}
+.owl-carousel .item .item-cover {
+  background: #3c3131;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  opacity: 0.6;
+}
+.bg-none {
+  background: none !important;
+}

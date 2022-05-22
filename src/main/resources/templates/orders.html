@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Orders | Prakash Naidu</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css} "/>
+
+    <!-- Datatable core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/datatables/1.10.23/css/jquery.dataTables.css}"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/kitchen-store.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<!-- ======= Container-Fluid Section ======= -->
+<div class="container-fluid p-0">
+    <!-- ======= Navbar Section ======= -->
+    <th:block th:replace="fragments/header :: nav-bar"></th:block>
+    <!-- End Navbar -->
+
+    <!-- ======= Container Section ======= -->
+    <div class="container my-5">
+        <div class="w-100 mb-3">
+            <h1>All Orders</h1>
+        </div>
+        <table id="example" class="display w-100">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Bill Amount</th>
+                <th>Date</th>
+                <th>No.Of Items</th>
+                <th>User</th>
+                <th>view</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order, stats : ${orders}">
+                <td th:text="${stats.index + 1}">1</td>
+                <td th:text="${'₹' + order.billAmount}">₹500</td>
+                <td th:text="${#dates.format(order.date, 'dd-MMM-yyyy')}">15-feb-2020</td>
+                <td th:text="${order.quantity}">Edinburgh</td>
+                <td><a th:href="@{/user/{id}(id = ${order.user.id})}" th:text="${order.user.name}"
+                       class="text-decoration-none">user</a></td>
+                <td><a th:href="@{/order/{id}(id = ${order.id})}" class="text-decoration-none">view</a></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>No</th>
+                <th>Bill Amount</th>
+                <th>Date</th>
+                <th>No.Of Items</th>
+                <th>User</th>
+                <th>view</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- End Container  -->
+
+    <!-- ======= Footer Section ======= -->
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+    <!-- End Footer  -->
+</div>
+<!-- End  Container-Fluid -->
+
+<!--jQuery JS dependency-->
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+<!--Bootstrap JS dependency-->
+<script th:src="@{/webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js}"></script>
+
+<!--Datatables JS dependency-->
+<script th:src="@{/webjars/datatables/1.10.23/js/jquery.dataTables.js}"></script>
+
+<!--Custom JS-->
+<script th:src="@{/js/kitchen-store.js}"></script>
+
+<script>
+   $(document).ready(function () {
+     $("#example").DataTable();
+   });
+</script>
+</body>
+
+</html>

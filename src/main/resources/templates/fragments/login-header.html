@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <style>
+        .toast {
+            right: 25%;
+        }
+    </style>
+</head>
+<body>
+<header th:fragment="header" class="mb-auto">
+    <div class="position-relative">
+
+        <!-- ======= Toast Section ======= -->
+        <div class="toast align-items-center text-white bg-primary border-2 text-white border-white position-absolute d-none"
+             role="alert" aria-live="assertive" aria-atomic="true" id="toast">
+            <div class="d-flex">
+                <div class="toast-body">Hello, world! This is a toast message.</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+            </div>
+        </div>
+        <!-- End Toast -->
+
+        <h3 class="float-md-start mb-0">Kitchen Story</h3>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+            <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+            <a class="nav-link" th:href="@{/login}"
+               th:classappend="${#strings.containsIgnoreCase(#httpServletRequest.requestURI, '/login')} ? 'active' : ''">
+                Sign In
+            </a>
+            <a class="nav-link" th:href="@{/user/sign-up}"
+               th:classappend="${#strings.containsIgnoreCase(#httpServletRequest.requestURI, '/user/sign-up')} ? 'active' : ''">
+                Sign Up
+            </a>
+            <a class="nav-link" th:href="@{/user/forgot-password}"
+               th:classappend="${#strings.containsIgnoreCase(#httpServletRequest.requestURI, '/user/forgot-password')} ? 'active' : ''">
+                Forgot Password
+            </a>
+        </nav>
+    </div>
+</header>
+<!-- Header Ends here -->
+</body>
+</html>
